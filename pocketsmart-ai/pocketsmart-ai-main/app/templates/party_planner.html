@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Party Planner{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><h1>Party Budget Planner</h1>
+  <p>Plan your event with smart budget allocations (amounts in ₹).</p></div></section>
+<div class="container narrow section-tight">
+  <form class="card form-card" id="planner-form" data-endpoint="/generate-party" data-planner="party" novalidate>
+    <fieldset><legend>💰 Basics</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Total budget (₹)</span>
+          <input name="total_budget" type="number" inputmode="numeric" min="1000" max="100000000" required placeholder="e.g. 50000"></label>
+        <label class="field"><span>Number of guests</span>
+          <input name="guest_count" type="number" min="1" max="5000" required placeholder="e.g. 40"></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>🎈 Event details</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Event type</span>
+          <select name="event_type" required>{% for e in event_types %}<option>{{ e }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Event location (city / area)</span>
+          <input name="location" type="text" minlength="2" maxlength="100" required placeholder="e.g. Coimbatore"></label>
+      </div>
+      <label class="field"><span>Venue preference</span>
+        <select name="venue_preference">{% for v in venue_prefs %}<option {% if v == 'No preference' %}selected{% endif %}>{{ v }}</option>{% endfor %}</select></label>
+    </fieldset>
+    <fieldset><legend>✅ What do you need?</legend>
+      <div class="checks">
+        <label class="check"><input type="checkbox" name="needs_catering" checked> 🍽️ Catering</label>
+        <label class="check"><input type="checkbox" name="needs_decoration" checked> 🎨 Decorations</label>
+        <label class="check"><input type="checkbox" name="needs_entertainment" checked> 🎵 Entertainment</label>
+      </div>
+      <label class="field"><span>Additional preferences <em>(optional)</em></span>
+        <textarea name="additional" rows="3" maxlength="500" placeholder="Theme, dietary restrictions, special requests…"></textarea></label>
+    </fieldset>
+    <div class="alert alert-error" id="form-error" role="alert" hidden></div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit"><span class="btn-label">Generate budget plan</span><span class="spinner" hidden></span></button>
+  </form>
+  <div id="results" class="results" aria-live="polite"></div>
+</div>
+{% endblock %}

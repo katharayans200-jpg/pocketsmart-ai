@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><h1>Welcome, {{ user.username }}!</h1>
+  <p>Choose a budget planner to get started.</p></div></section>
+<div class="container section-tight">
+  <div class="grid grid-3">
+    <article class="card planner-card"><div class="planner-head p-home">🏠</div><div class="planner-body">
+      <h3>Home Budget Planner</h3><p>Plan lighting, fans, furniture and dining within your budget.</p>
+      <a class="btn btn-primary" href="/home-planner">Get started</a></div></article>
+    <article class="card planner-card"><div class="planner-head p-party">🎉</div><div class="planner-body">
+      <h3>Party Budget Planner</h3><p>Allocate venue, catering, decor and entertainment.</p>
+      <a class="btn btn-primary" href="/party-planner">Get started</a></div></article>
+    <article class="card planner-card"><div class="planner-head p-jewel">💎</div><div class="planner-body">
+      <h3>Jewelry Budget Planner</h3><p>Match jewelry to your occasion and outfit.</p>
+      <a class="btn btn-primary" href="/jewelry-planner">Get started</a></div></article>
+  </div>
+
+  <div class="grid grid-2 dash-lower">
+    <section class="card">
+      <div class="card-head"><h2>Recent recommendations</h2><a class="btn btn-ghost btn-sm" href="/history">View all history</a></div>
+      {% if recent %}
+      <ul class="recent-list">
+        {% for r in recent %}
+        <li><a href="/history/{{ r.id }}">
+          <span class="chip chip-{{ r.planner_type }}">{{ {'home':'Home','party':'Party','jewelry':'Jewelry'}[r.planner_type] }}</span>
+          <span class="recent-main"><strong>{{ r.title }}</strong><small>{{ r.details }}</small></span>
+          <span class="recent-amt">₹{{ '{:,}'.format(r.total_budget) }}<small>left ₹{{ '{:,}'.format(r.remaining) }}</small></span>
+        </a></li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="empty"><div class="empty-icon">🗂️</div><h3>No plans yet</h3><p>Create your first plan with any planner — it will be saved here.</p></div>
+      {% endif %}
+    </section>
+    <section class="card">
+      <div class="card-head"><h2>Your saved plans</h2></div>
+      <div class="stat-row">
+        <div class="stat"><strong>{{ total }}</strong><span>Total plans</span></div>
+        <div class="stat"><strong>{{ counts.get('home', 0) }}</strong><span>Home</span></div>
+        <div class="stat"><strong>{{ counts.get('party', 0) }}</strong><span>Party</span></div>
+        <div class="stat"><strong>{{ counts.get('jewelry', 0) }}</strong><span>Jewelry</span></div>
+      </div>
+      <h3 class="mini-title">Quick actions</h3>
+      <div class="quick">
+        <a class="btn btn-soft" href="/home-planner">+ New home plan</a>
+        <a class="btn btn-soft" href="/party-planner">+ New party plan</a>
+        <a class="btn btn-soft" href="/jewelry-planner">+ New jewelry plan</a>
+        <a class="btn btn-soft" href="/history">📜 View history</a>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

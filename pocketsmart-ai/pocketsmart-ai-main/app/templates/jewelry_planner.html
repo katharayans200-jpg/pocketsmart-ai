@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Jewelry Planner{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><h1>Jewelry Budget Planner</h1>
+  <p>Get jewelry recommendations within your budget for any occasion (amounts in ₹).</p></div></section>
+<div class="container narrow section-tight">
+  <form class="card form-card" id="planner-form" data-endpoint="/generate-jewelry" data-planner="jewelry"
+        enctype="multipart/form-data" data-max-mb="{{ max_mb }}" novalidate>
+    <fieldset><legend>💰 Budget</legend>
+      <label class="field"><span>Total budget (₹)</span>
+        <input name="total_budget" type="number" inputmode="numeric" min="500" max="100000000" required placeholder="e.g. 25000"></label>
+    </fieldset>
+    <fieldset><legend>🎊 Occasion &amp; preferences</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Occasion</span>
+          <select name="occasion" required>{% for o in occasions %}<option>{{ o }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Jewelry type</span>
+          <select name="jewelry_type">{% for j in jewelry_types %}<option>{{ j }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Preferred style <em>(optional)</em></span>
+          <input name="style" type="text" maxlength="60" placeholder="e.g. minimalist, traditional"></label>
+        <label class="field"><span>Metal preference</span>
+          <select name="metal">{% for m in metals %}<option>{{ m }}</option>{% endfor %}</select></label>
+      </div>
+      <label class="field"><span>Colour preferences <em>(optional)</em></span>
+        <input name="colors" type="text" maxlength="100" placeholder="e.g. pearl, emerald green"></label>
+      <label class="field"><span>Additional requirements <em>(optional)</em></span>
+        <textarea name="additional" rows="3" maxlength="500" placeholder="Anything else we should consider…"></textarea></label>
+    </fieldset>
+    <fieldset><legend>👗 Outfit image <em>(optional)</em></legend>
+      <p class="hint">JPG, JPEG or PNG, up to {{ max_mb }} MB. Gemini will consider the colours and style. Works fine without one.</p>
+      <input id="outfit_image" name="outfit_image" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+      <div class="preview" id="image-preview" hidden>
+        <img alt="Outfit preview"><button type="button" class="btn btn-ghost btn-sm" id="remove-image">Remove image</button>
+      </div>
+    </fieldset>
+    <div class="alert alert-error" id="form-error" role="alert" hidden></div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit"><span class="btn-label">Get recommendations</span><span class="spinner" hidden></span></button>
+  </form>
+  <div id="results" class="results" aria-live="polite"></div>
+</div>
+{% endblock %}

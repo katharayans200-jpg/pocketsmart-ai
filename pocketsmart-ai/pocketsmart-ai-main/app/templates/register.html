@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+{% set fe = {} %}
+{% if errors %}{% for e in errors %}{% if fe.update({e.field: e.message}) %}{% endif %}{% endfor %}{% endif %}
+<section class="auth-wrap">
+  <div class="auth-brand"><h1>PocketSmart</h1><p>AI-Powered Budget Planning</p></div>
+  <div class="card auth-card">
+    <h2>Create your account</h2>
+    {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+    <form method="post" action="/register" novalidate data-validate="register">
+      <label class="field"><span>Username</span>
+        <input name="username" type="text" autocomplete="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_.\-]{3,30}" value="{{ values.username if values else '' }}" placeholder="Choose a username" class="{{ 'invalid' if fe.username }}">
+        <small class="field-error">{{ fe.username or '' }}</small></label>
+      <label class="field"><span>Email</span>
+        <input name="email" type="email" autocomplete="email" required value="{{ values.email if values else '' }}" placeholder="Enter your email" class="{{ 'invalid' if fe.email }}">
+        <small class="field-error">{{ fe.email or '' }}</small></label>
+      <label class="field"><span>Password</span>
+        <input name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="At least 8 characters, letters and numbers" class="{{ 'invalid' if fe.password }}">
+        <div class="strength" data-strength><i></i></div>
+        <small class="field-error">{{ fe.password or '' }}</small></label>
+      <label class="field"><span>Confirm password</span>
+        <input name="confirm_password" type="password" autocomplete="new-password" required placeholder="Confirm your password" class="{{ 'invalid' if fe.form or fe.confirm_password }}">
+        <small class="field-error">{{ fe.confirm_password or fe.form or '' }}</small></label>
+      <div class="form-error" data-form-error hidden></div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Create account</button>
+    </form>
+    <p class="auth-alt">Already have an account? <a href="/login">Sign in</a></p>
+  </div>
+</section>
+{% endblock %}

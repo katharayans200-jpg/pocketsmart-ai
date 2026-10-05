@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home Interior Planner{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="container"><h1>Home Interior Budget Planner</h1>
+  <p>Create a customized budget plan for your dream home interior (amounts in ₹).</p></div></section>
+<div class="container narrow section-tight">
+  <form class="card form-card" id="planner-form" data-endpoint="/generate-home" data-planner="home" novalidate>
+    <fieldset><legend>💰 Budget</legend>
+      <label class="field"><span>Total budget (₹)</span>
+        <input name="total_budget" type="number" inputmode="numeric" min="1000" max="100000000" step="1" required placeholder="e.g. 150000"></label>
+    </fieldset>
+    <fieldset><legend>🛋️ Room</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Room type</span>
+          <select name="room_type" required>{% for r in room_types %}<option>{{ r }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Number of rooms</span>
+          <input name="num_rooms" type="number" min="1" max="20" value="1" required></label>
+      </div>
+    </fieldset>
+    <fieldset><legend>💡 Fixtures &amp; furniture quantities</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Ceiling fans</span><input name="num_fans" type="number" min="0" max="50" value="2" required></label>
+        <label class="field"><span>Lights / fixtures</span><input name="num_lights" type="number" min="0" max="100" value="5" required></label>
+        <label class="field"><span>Furniture pieces</span><input name="num_furniture" type="number" min="0" max="50" value="3" required></label>
+        <label class="field"><span>Dining tables</span><input name="num_dining_tables" type="number" min="0" max="10" value="1" required></label>
+      </div>
+      <label class="field"><span>Other required furniture <em>(optional)</em></span>
+        <input name="other_furniture" type="text" maxlength="300" placeholder="e.g. bookshelf, shoe rack"></label>
+    </fieldset>
+    <fieldset><legend>🎨 Style</legend>
+      <div class="grid grid-2">
+        <label class="field"><span>Preferred interior style</span>
+          <select name="style">{% for s in styles %}<option>{{ s }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Colour preferences <em>(optional)</em></span>
+          <input name="colors" type="text" maxlength="100" placeholder="e.g. warm neutrals, teal accents"></label>
+      </div>
+      <label class="field"><span>Additional requirements <em>(optional)</em></span>
+        <textarea name="additional" rows="3" maxlength="500" placeholder="Anything else we should consider…"></textarea></label>
+    </fieldset>
+    <div class="alert alert-error" id="form-error" role="alert" hidden></div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit"><span class="btn-label">Generate recommendations</span><span class="spinner" hidden></span></button>
+  </form>
+  <div id="results" class="results" aria-live="polite"></div>
+</div>
+{% endblock %}

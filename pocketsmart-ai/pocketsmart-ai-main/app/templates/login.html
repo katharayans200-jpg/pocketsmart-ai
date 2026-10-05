@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-brand"><h1>PocketSmart</h1><p>AI-Powered Budget Planning</p></div>
+  <div class="card auth-card">
+    <h2>Welcome back</h2>
+    {% if error %}<div class="alert alert-error" role="alert">{{ error }}</div>{% endif %}
+    <form method="post" action="/login" novalidate data-validate="login">
+      <label class="field"><span>Username or email</span>
+        <input name="username" type="text" autocomplete="username" required value="{{ values.username if values else '' }}" placeholder="Enter your username or email"></label>
+      <label class="field"><span>Password</span>
+        <input name="password" type="password" autocomplete="current-password" required placeholder="Enter your password"></label>
+      <div class="form-error" data-form-error hidden></div>
+      <button class="btn btn-primary btn-block btn-lg" type="submit">Sign in →</button>
+    </form>
+    <p class="auth-alt">Don't have an account? <a href="/register">Create account</a></p>
+  </div>
+</section>
+{% endblock %}
